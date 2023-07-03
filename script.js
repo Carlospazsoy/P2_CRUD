@@ -1,57 +1,74 @@
-let elementos = [];
+console.log("Entro al script.js");
 
-function agregarElemento() {
-  const input = document.getElementById("inputText");
-  const texto = input.value;
-  if (texto !== "") {
-    elementos.push(texto);
-    input.value = "";
-    input.focus();
+const nombreInput = document.getElementById("nombre");
+const lista = document.getElementById("lista");
+let nombres = localStorage.getItem("nombres") ? JSON.parse(localStorage.getItem("nombres")) : [];
+let editando = false;
+let nombre_previo = "";
+
+function agregarNombre() {
+  if (editando) {
+    const indice = nombres.indexOf(nombre_previo);
+    if (indice !== -1) {
+      nombres.splice(indice, 1, nombreInput.value);
+      localStorage.setItem("nombres", JSON.stringify(nombres));
+      nombreInput.value = "";
+      actualizarLista();
+      editando = false;
+    }
+  } else {
+    const nombre = nombreInput.value;
+    nombres.push(nombre);
+    localStorage.setItem("nombres", JSON.stringify(nombres));
+    nombreInput.value = "";
+    actualizarLista();
   }
 }
 
-function mostrarElementos() {
-  const lista = document.getElementById("elementos");
+function actualizarLista() {
   lista.innerHTML = "";
+  nombres.forEach(nombre => {
+    const li = document.createElement("li");
+    li.textContent = nombre;
 
-  for (let i = 0; i < elementos.length; i++) {
-    const elemento = document.createElement("li");
-    elemento.innerText = elementos[i];
+    const btnEliminar = document.createElement("button");
+    btnEliminar.classList.add("btn", "btn-danger");
+    btnEliminar.addEventListener("click", () => deleteIndividual(nombre));
+    btnEliminar.textContent = "Eliminar";
+    li.appendChild(btnEliminar);
+
+    const btnEdit = document.createElement("button");
+    btnEdit.classList.add("btn", "btn-warning", "mr-2");
+    btnEdit.addEventListener("click", () => editar(nombre));
+    btnEdit.textContent = "Editar";
+    li.appendChild(btnEdit);
 
     const botonesContainer = document.createElement("div");
     botonesContainer.classList.add("botones-container");
+    botonesContainer.appendChild(btnEliminar);
+    botonesContainer.appendChild(btnEdit);
+    li.appendChild(botonesContainer);
 
-    const editarBtn = document.createElement("button");
-    editarBtn.innerText = "Editar";
-    editarBtn.classList.add("editar");
-    editarBtn.setAttribute("data-index", i);
-    editarBtn.onclick = editarElemento;
-
-    const eliminarBtn = document.createElement("button");
-    eliminarBtn.innerText = "Eliminar";
-    eliminarBtn.classList.add("eliminar");
-    eliminarBtn.setAttribute("data-index", i);
-    eliminarBtn.onclick = eliminarElemento;
-
-    botonesContainer.appendChild(editarBtn);
-    botonesContainer.appendChild(eliminarBtn);
-
-    elemento.appendChild(botonesContainer);
-    lista.appendChild(elemento);
-  }
+    lista.appendChild(li);
+  });
 }
 
-function editarElemento() {
-  const index = this.getAttribute("data-index");
-  const nuevoTexto = prompt("Ingrese el nuevo texto:", elementos[index]);
-  if (nuevoTexto !== null && nuevoTexto !== "") {
-    elementos[index] = nuevoTexto;
-    mostrarElementos();
-  }
+function deleteIndividual(nombre) {
+  nombres = nombres.filter(n => n !== nombre);
+  localStorage.setItem("nombres", JSON.stringify(nombres));
+  actualizarLista();
 }
 
-function eliminarElemento() {
-  const index = this.getAttribute("data-index");
-  elementos.splice(index, 1);
-  mostrarElementos();
+function limpiarStorage() {
+  localStorage.clear();
+  nombres = [];
+  actualizarLista();
 }
+
+function editar(nombre) {
+  editando = true;
+  nombre_previo = nombre;
+  nombreInput.value = nombre;
+}
+
+actualizarLista();

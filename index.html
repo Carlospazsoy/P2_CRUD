@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <script defer src="script.js"></script>
+  <title>CRUD</title>
 </head>
 <body>
-  <h1>Proyecto 2 CRUD</h1>
-  <div id="general-container">
-  <input type="text" id="inputText" placeholder="Ingrese un elemento">
-  <div class="button-container">
-    <button onclick="agregarElemento()">Agregar</button>
-    <button onclick="mostrarElementos()">Show</button>
+  <header>Proyecto 2 CRUD</header>
+  
+  <div id="nombreInput">
+    <input type="text" id="nombre" placeholder="Ingrese un nombre">
+    <div class="button-container">
+      <button onclick="agregarNombre()">Agregar</button>
+      <button onclick="limpiarStorage()">Limpiar</button>
+    </div>
+    
+    <ul id="lista"></ul>
   </div>
 
-  <ul id="elementos"></ul>
-</div>
-
-  <script src="script.js"></script>
+  <footer>
+    <p>Desarrollado por Carlos Paz</p>
+  </footer>
 </body>
 </html>
