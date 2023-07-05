@@ -40,6 +40,15 @@ function agregarNombre() {
     actualizarLista();
   }
 }
+/* Funcionalidad extra : ejecutar la funcion con enter cuando se esta dentro del input*/
+/* Se extrae el dato */
+const nombreInputEnter = document.getElementById("nombreInput");
+/* sintax addEventListener(evento, funcion) */
+nombreInputEnter.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    agregarNombre();
+  }
+});
 
 function actualizarLista() {
   /* aseguramos que el innerHTML del elemento ul este vacio */
